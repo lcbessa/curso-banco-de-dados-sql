@@ -61,8 +61,8 @@ SELECT NOW() AS DATA_HORA;
 SELECT 'BANCO DE DADOS';
 
 /* ALIAS DE COLUNAS */
-SELECT NOME, SEXO, EMAIL  FROM CLIENTE;
-SELECT NOME, SEXO, EMAIL,  ENDERECO FROM CLIENTE;
+SELECT NOME, SEXO, EMAIL FROM CLIENTE;
+SELECT NOME, SEXO, EMAIL, ENDERECO FROM CLIENTE;
 
 /* APENAS PARA FINS ACADEMICOS */
 SELECT * FROM CLIENTE;
@@ -77,11 +77,56 @@ WHERE SEXO = 'F';
 SELECT NOME AS CLIENTE, ENDERECO FROM CLIENTE
 WHERE SEXO = 'F';
 
-SELECT NOME AS CLIENTE, ENDERECO AS LOCALIZAÇÃO FROM CLIENTE WHERE SEXO = 'F
-';
+SELECT NOME AS CLIENTE, ENDERECO AS LOCALIZAÇÃO FROM CLIENTE WHERE SEXO = 'F';
 
 /* CARACTER CORINGA % -> QUALQUER COISA */
 SELECT NOME AS CLIENTE, ENDERECO AS LOCALIZAÇÃO FROM CLIENTE WHERE ENDERECO LIKE '%RJ';
 SELECT NOME AS CLIENTE, ENDERECO AS LOCALIZAÇÃO FROM CLIENTE WHERE ENDERECO LIKE 'OSACAR CURY%';
 SELECT NOME AS CLIENTE, ENDERECO AS LOCALIZAÇÃO FROM CLIENTE WHERE ENDERECO LIKE '%CENTRO%';
 SELECT NOME AS CLIENTE, ENDERECO AS LOCALIZAÇÃO FROM CLIENTE WHERE ENDERECO LIKE '%______CENTRO_____%';
+
+/* DESAFIO #01*/
+
+/* CRIANDO BANCO DE DADOS*/
+CREATE DATABASE LIVRARIA;
+
+/* CRIANDO TABELA LIVROS */
+CREATE TABLE LIVROS (
+    NOME_LIVRO VARCHAR(50),
+    NOME_AUTOR VARCHAR(50),
+    SEXO CHAR(9),
+    PAGINAS INT(4),
+    NOME_EDITORA VARCHAR(30),
+    PRECO_LIVRO FLOAT(5,2),
+    UF CHAR(2),
+    ANO_PUBLICACAO INT(4)
+);
+
+/* INSERÇÃO TESTES */
+INSERT INTO LIVROS VALUES ('Cavaleiro Real','Ana Claudia','Feminino', 465, 'Atlas', 49.9, 'RJ',2009);
+INSERT INTO LIVROS VALUES ('SQL para leigos', 'João Nunes', 'Masculino', 450, 'Addison', 98, 'SP', 2018);
+INSERT INTO LIVROS VALUES ('Receitas Caseiras', 'Celia Tavares', 'Feminino', 210, 'Atlas', 45, 'RJ', 2018);
+INSERT INTO LIVROS VALUES ('Pessoas Efetivas', 'Eduardo Santos', 'Masculino', 390, 'Beta', 78.99, 'RJ', 2018);
+INSERT INTO LIVROS VALUES ('Habitos Saudáveis', 'Eduardo Santos', 'Masculino', 630, 'Beta', 150.00, 'RJ', 2019);
+INSERT INTO LIVROS VALUES ('A Casa Marrom', 'Hermes Macedo', 'Masculino', 250, 'Bubba', 60, 'MG', 2016);
+INSERT INTO LIVROS VALUES ('Estacio Querido', 'Geraldo Francisco', 'Masculino', 310, 'Insignia', 100, 'ES', 2015);
+INSERT INTO LIVROS VALUES ('Pra sempre amigas', 'Leda Silva', 'Feminino', 510, 'Insignia', 78,98, 'ES', 2011);
+INSERT INTO LIVROS VALUES ('Copas Inesqueciveis', 'Marco Alcantara', 'Masculino', 200, 'Larson', 130.98, 'RS', 2018);
+INSERT INTO LIVROS VALUES ('O poder da mente', 'Clara Mafra', 'Feminino', 120, 'Continental', 56.58, 'SP', 2017);
+/* 1 – Trazer todos os dados. */
+SELECT * FROM LIVROS;
+
+/* 2 – Trazer o nome do livro e o nome da editora */
+SELECT NOME_LIVRO, NOME_EDITORA FROM LIVROS;
+
+/* 3 – Trazer o nome do livro e a UF dos livros publicados por autores do sexo masculino. */
+SELECT NOME_LIVRO, UF FROM LIVROS  WHERE SEXO = 'Masculino';
+
+/* 4 - Trazer o nome do livro e o número de páginas dos livros publicados por autores do sexo feminino. */
+SELECT NOME_LIVRO, PAGINAS  FROM LIVROS WHERE SEXO = 'Feminino';
+
+/* 5 – Trazer os valores dos livros das editoras de São Paulo. */
+SELECT PRECO_LIVRO FROM LIVROS WHERE UF = 'SP';
+
+/* 6 – Trazer os dados dos autores do sexo masculino que tiveram livros publicados por São Paulo ou Rio de Janeiro (Questão Desafio). */
+SELECT NOME_AUTOR, SEXO FROM LIVROS WHERE SEXO = 'Masculino' AND (UF ='SP' OR UF ='RJ');
