@@ -1357,4 +1357,182 @@ WHERE SEXO = 'F'; /* SELEÇÃO*/
 
 SELECT NUMERO /* SELEÇÃO */
 FROM TELEFONE  /* ORIGEM */
-WHERE TIPO ='CEL'; /* SELEÇÃO*/
+WHERE TIPO ='CEL'; /* SELEÇÃO */
+
+/* JUNÇÃO -> JOIN */
+
+SELECT NOME, EMAIL, IDCLIENTE 
+FROM CLIENTE;
+
+SELECT ID_CLIENTE, BAIRRO, CIDADE 
+FROM ENDERECO;
+
++------------+----------+----------------+ 
+| ID_CLIENTE | BAIRRO   | CIDADE         |
++------------+----------+----------------+
+|          4 | CENTRO   | B. HORIZONTE   |
+|          1 | CENTRO   | RIO DE JANEIRO |
+|          3 | JARDINS  | SAO PAULO      |
+|          2 | ESTACIO  | RIO DE JANEIRO |
+|          6 | FLAMENGO | RIO DE JANEIRO |
+|          5 | CENTRO   | VITORIA        |
++------------+----------+----------------+
++---------+-------------------+-----------+
+| NOME    | EMAIL             | IDCLIENTE |
++---------+-------------------+-----------+
+| JOAO    | JOAO@GMAIL.COM    |         1 |
+| JOSE    | JOSE@GMAIL.COM    |         2 |
+| LUCIANO | LUCIANO@GMAIL.COM |         3 |
+| CARLOS  | CARLOSA@IG.COM    |         4 |
+| ANA     | ANA@IG.COM        |         5 |
+| CLARA   | NULL              |         6 |
+| JORGE   | JORGE@IG.COM      |         7 |
+| CELIA   | JCELIA@IG.COM     |         8 |
++---------+-------------------+-----------+
+
+/* NOME, SEXO, BAIRRO, CIDADE */
+
+SELECT NOME, SEXO, BAIRRO, CIDADE /* PROJEÇÃO */
+FROM CLIENTE, ENDERECO /* ORIGEM */
+WHERE IDCLIENTE = ID_CLIENTE /* JUNÇÃO*/
+
+/* JOIN */
+
+SELECT NOME, SEXO, BAIRRO, CIDADE /* PROJEÇÃO */
+FROM CLIENTE /* ORIGEM */
+INNER JOIN ENDERECO /* JUNÇÃO*/
+ON IDCLIENTE = ID_CLIENTE /* SELEÇÃO*/
+
++---------+------+----------+----------------+
+| NOME    | SEXO | BAIRRO   | CIDADE         |
++---------+------+----------+----------------+
+| CARLOS  | M    | CENTRO   | B. HORIZONTE   |
+| JOAO    | M    | CENTRO   | RIO DE JANEIRO |
+| LUCIANO | M    | JARDINS  | SAO PAULO      |
+| JOSE    | M    | ESTACIO  | RIO DE JANEIRO |
+| CLARA   | F    | FLAMENGO | RIO DE JANEIRO |
+| ANA     | F    | CENTRO   | VITORIA        |
++---------+------+----------+----------------+
+
+SELECT NOME, SEXO, BAIRRO, CIDADE /* PROJEÇÃO */
+FROM CLIENTE /* ORIGEM */
+INNER JOIN ENDERECO /* JUNÇÃO*/
+ON IDCLIENTE = ID_CLIENTE 
+AND SEXO = 'F'; /* SELEÇÃO */
+
+SELECT NOME, SEXO, TIPO, NUMERO
+FROM CLIENTE
+    INNER JOIN TELEFONE
+    ON IDCLIENTE = ID_CLIENTE;
+
+/* PROJETAR: NOME, SEXO, BAIRRO, CIDADE, TIPO, NUMERO */
+/* JOIN COM MAIS DE 2 TABELAS */
+
+/* SEM APELIDO */
+SELECT CLIENTE.NOME, CLIENTE.SEXO, ENDERECO.BAIRRO, ENDERECO.CIDADE, TELEFONE.TIPO, TELEFONE.NUMERO
+FROM CLIENTE
+    INNER JOIN ENDERECO
+    ON CLIENTE.IDCLIENTE = ENDERECO.ID_CLIENTE
+    INNER JOIN TELEFONE
+    ON CLIENTE.IDCLIENTE = TELEFONE.ID_CLIENTE;
+
+/* COM APELIDO */
+T.TIPO, T.NUMERO
+SELECT C.NOME, C.SEXO, E.RUA, E.BAIRRO, E.CIDADE
+FROM CLIENTE C
+    INNER JOIN ENDERECO E
+    ON C.IDCLIENTE = E.ID_CLIENTE 
+    INNER JOIN TELEFONE T
+    ON C.IDCLIENTE = T.ID_CLIENTE;
+
+/*
+    DML - DATA MANIPULATION LANGUAGE
+    DDL - DATA DEFINITION LANGUAGE
+    DCL - DATA CONTROL LANGUAGE
+    TCL - TRANSACTION CONTROL LANGUAGE
+*/
+
+----------- DML ---------------
+/* INSERT */
+INSERT INTO CLIENTE VALUES(NULL,'PAULA','F','PAULA@IG.COM','12332145689');
+INSERT INTO ENDERECO VALUES(NULL,'RUA BENEDITA DE SOUZA','AEROPORTO','JOÃO PINHEIRO','MG');
+SELECT * FROM CLIENTE;
+
+/* FILTROS */
+SELECT * FROM CLIENTE WHERE SEXO='M';
+
+/* UPDATE */
+UPDATE CLIENTE 
+SET SEXO = 'F'
+WHERE IDCLIENTE = 7
+
+/* DELETE */
+
+INSERT INTO CLIENTE VALUES(NULL,'XXX','M',NULL,'XXX');
+
+SELECT * FROM CLIENTE
+WHERE IDCLIENTE = 8;
+
+DELETE FROM CLIENTE WHERE IDCLIENTE = 8;
+
+---------------DDL--------------
+CREATE TABLE PRODUTO(
+	IDPRODUTO INT PRIMARY KEY AUTO_INCREMENT,
+	NOME_PRODUTO VARCHAR(30) NOT NULL,
+	PRECO INT,
+	FRETE FLOAT(10,2) NOT NULL
+);
+
+/* ALTER TABLE */
+/* ALTERANDO O NOME DE UMA COLUNA - CHANGE */
+
+ALTER TABLE PRODUTO
+CHANGE PRECO VALOR_UNITARIO INT NOT NULL;
+
++----------------+-------------+------+-----+---------+----------------+
+| Field          | Type        | Null | Key | Default | Extra          |
++----------------+-------------+------+-----+---------+----------------+
+| IDPRODUTO      | int         | NO   | PRI | NULL    | auto_increment |
+| NOME_PRODUTO   | varchar(30) | NO   |     | NULL    |                |
+| VALOR_UNITARIO | int         | NO   |     | NULL    |                |
+| FRETE          | float(10,2) | NO   |     | NULL    |                |
++----------------+-------------+------+-----+---------+----------------+
+
+ALTER TABLE PRODUTO 
+CHANGE VALOR_UNITARIO VALOR_UNITARIO INT;
++----------------+-------------+------+-----+---------+----------------+
+| Field          | Type        | Null | Key | Default | Extra          |
++----------------+-------------+------+-----+---------+----------------+
+| IDPRODUTO      | int         | NO   | PRI | NULL    | auto_increment |
+| NOME_PRODUTO   | varchar(30) | NO   |     | NULL    |                |
+| VALOR_UNITARIO | int         | YES  |     | NULL    |                |
+| FRETE          | float(10,2) | NO   |     | NULL    |                |
++----------------+-------------+------+-----+---------+----------------+
+
+/* MODIFY - ALTERAR TIPO */
+
+ALTER TABLE PRODUTO
+MODIFY VALOR_UNITARIO VARCHAR(50) NOT NULL;
+
+/*ADICIONANDO COLUNAS */
+
+ALTER TABLE PRODUTO
+ADD PESO FLOAT(10,2) NOT NULL;
+
+/* APAGANDO UMA COLUNA */
+
+ALTER TABLE PRODUTO
+DROP COLUMN PESO;
+
+/* ADICIONANDO UMA COLUNA NA ORDEM ESPCÍFICA */
+
+ALTER TABLE PRODUTO
+ADD COLUMN PESO FLOAT(10,2) NOT NULL
+AFTER NOME_PRODUTO;
+
+ALTER TABLE PRODUTO
+DROP COLUMN PESO;
+
+ALTER TABLE PRODUTO
+ADD COLUMN PESO FLOAT(10,2) NOT NULL
+FIRST;
